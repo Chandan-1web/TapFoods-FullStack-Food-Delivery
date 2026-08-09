@@ -1,61 +1,81 @@
 # 🍔 TapFoods - Full Stack Food Delivery Web Application
 
-> A premium Full Stack Food Delivery Web Application built using Java, JSP, Servlets, JDBC, MySQL, HTML, CSS and JavaScript.
+> A Full Stack Food Delivery Web Application built using Java, JSP, Servlets, JDBC, MySQL, HTML, CSS, JavaScript, BCrypt and Razorpay.
 
 ---
 
 ## 🚀 Project Overview
 
-TapFoods is a modern food delivery web application that allows users to browse restaurants, explore menus, add food items to the cart, place orders, manage their profile, and track previous orders through a responsive and user-friendly interface.
+TapFoods is a full-stack food delivery web application that allows users to securely register and log in, browse restaurants, explore menus, search food items, manage a shopping cart, place orders, make online payments, manage their profile, and track previous orders through a responsive and user-friendly interface.
+
+The customer module is fully functional with secure authentication, complete ordering workflow, Cash on Delivery, and Razorpay Test Mode payment integration.
 
 ---
 
 # ✨ Features
 
 ## 🔐 Authentication
+
 - Secure User Registration
-- BCrypt Password Encryption
+- BCrypt Password Hashing
 - Secure Login
-- Change Password
 - Session Management
+- Change Password
 - Logout
 
 ---
 
-## 🍽 Restaurant Module
+## 🍽 Restaurant & Menu Module
+
 - Browse Restaurants
 - Search Restaurants
 - View Restaurant Menu
 - Search Food Items
+- View Food Details
 
 ---
 
 ## 🛒 Shopping Cart
-- Add to Cart
-- Update Quantity
+
+- Add Items to Cart
+- Update Item Quantity
 - Remove Items
 - Automatic Price Calculation
+- Dynamic Grand Total
 
 ---
 
-## 💳 Checkout
+## 💳 Checkout & Payments
+
+- Customer Delivery Details
 - Delivery Address
-- Cash on Delivery
+- Cash on Delivery (COD)
+- Razorpay Payment Gateway Integration
+- Razorpay Test Mode Payments
+- Secure Payment Verification
+- Razorpay Order ID Management
+- Razorpay Payment ID Management
+- Payment Signature Verification
+- Payment Status Storage
 - Order Confirmation
 - Order Success Page
 
 ---
 
 ## 📦 Order Management
+
+- Place Orders
 - Order History
-- Order Tracking
 - Search Orders
+- Order Status Tracking
 - Cancel Orders
-- Order Status
+- View Ordered Items
+- Payment Method Information
 
 ---
 
 ## 👤 User Profile
+
 - View Profile
 - Edit Profile
 - Update Delivery Address
@@ -66,87 +86,74 @@ TapFoods is a modern food delivery web application that allows users to browse r
 # 🛠 Technology Stack
 
 ### Frontend
+
 - HTML5
 - CSS3
 - JavaScript
 - JSP
 
 ### Backend
+
 - Java
-- Servlets
+- Jakarta Servlets
 - JDBC
+- DAO Architecture
 
 ### Database
+
 - MySQL
 
+### Security
+
+- BCrypt Password Hashing
+- Session-Based Authentication
+- Razorpay Payment Signature Verification
+
+### Payment Gateway
+
+- Razorpay
+
 ### Server
+
 - Apache Tomcat 10
 
 ### IDE
+
 - Eclipse IDE
+
+### Version Control
+
+- Git
+- GitHub
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 FoodDelivery
 │
-├── DAO
-├── DAOImpl
-├── Model
-├── Servlets
-├── Utility
+├── src/main/java
+│   └── com.food
+│       ├── DAO
+│       ├── DAOImpl
+│       ├── Model
+│       ├── servlets
+│       └── utility
 │
-├── JSP Pages
-│
-├── Images
+├── src/main/webapp
+│   ├── images
+│   ├── WEB-INF
+│   │   └── lib
+│   ├── Cart.jsp
+│   ├── Checkout.jsp
+│   ├── Login.jsp
+│   ├── Menu.jsp
+│   ├── MyOrders.jsp
+│   ├── OrderSuccess.jsp
+│   ├── Profile.jsp
+│   ├── RazorpayPayment.jsp
+│   ├── Register.jsp
+│   └── Restaurant.jsp
 │
 └── Database
-```
-
----
-
-# ⭐ Modules Completed
-
-- ✅ Registration
-- ✅ Login
-- ✅ Restaurant Listing
-- ✅ Restaurant Search
-- ✅ Menu Page
-- ✅ Menu Search
-- ✅ Shopping Cart
-- ✅ Checkout
-- ✅ Order Placement
-- ✅ Order Success
-- ✅ My Orders
-- ✅ Cancel Order
-- ✅ Profile Management
-- ✅ Change Password
-
----
-
-# 🚀 Upcoming Features
-
-- 💳 Razorpay Payment Gateway
-- 👨‍💼 Admin Dashboard
-- 🍽 Restaurant Management
-- 📋 Menu Management
-- 📊 Sales Dashboard
-- 📦 Order Management
-- 📧 Email Notifications
-
----
-
-# 👨‍💻 Developer
-
-**Chandan K**
-
-Java Full Stack Developer
-
-GitHub:
-https://github.com/Chandan-1web
-
----
-
-## ⭐ If you like this project, please give it a Star.
