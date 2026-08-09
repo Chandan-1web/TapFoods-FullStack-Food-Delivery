@@ -794,7 +794,7 @@ button {
 						class="sidebar-icon">🛒</span> <span>My Cart</span>
 					</a> <a href="#" class="sidebar-link active"> <span
 						class="sidebar-icon">✓</span> <span>Order Success</span>
-					</a> <a href="#" class="sidebar-link"> <span class="sidebar-icon">📦</span>
+					</a> <a  href="<%=request.getContextPath()%>/MyOrdersServlet" class="sidebar-link"> <span class="sidebar-icon">📦</span>
 						<span>My Orders</span>
 					</a>
 				</nav>

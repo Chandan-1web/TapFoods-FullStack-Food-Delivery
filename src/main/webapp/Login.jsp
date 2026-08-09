@@ -857,8 +857,8 @@ a {
 					<div class="divider">New to TapFoods?</div>
 
 					<p class="signup-text">
-						Don't have an account?
-						<a href="Register.html">Create account</a>
+				    	Don't have an account?
+						<a href="Register.jsp">Create account</a>
 					</p>
 
 					<div class="secure-note">

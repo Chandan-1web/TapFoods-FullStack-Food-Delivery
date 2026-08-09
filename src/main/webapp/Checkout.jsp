@@ -538,8 +538,7 @@ img {
 .payment-grid {
 	margin-top: 12px;
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 12px
+grid-template-columns: repeat(2, minmax(0, 1fr));	gap: 12px
 }
 
 .payment-option input {
@@ -964,19 +963,39 @@ img {
 								<div>
 									<p class="payment-title">Payment Mode</p>
 									<div class="payment-grid">
-										<div class="payment-option">
-											<input type="radio" id="upi" name="paymentMode" value="UPI"
-												checked><label for="upi"><span>📱</span>UPI</label>
-										</div>
-										<div class="payment-option">
-											<input type="radio" id="cod" name="paymentMode" value="COD"><label
-												for="cod"><span>💵</span>Cash on Delivery</label>
-										</div>
-										<div class="payment-option">
-											<input type="radio" id="card" name="paymentMode" value="CARD"><label
-												for="card"><span>💳</span>Card Payment</label>
-										</div>
-									</div>
+
+	<div class="payment-option">
+
+		<input
+			type="radio"
+			id="razorpay"
+			name="paymentMode"
+			value="RAZORPAY"
+			checked>
+
+		<label for="razorpay">
+			<span>💳</span>
+			Pay Online
+		</label>
+
+	</div>
+
+	<div class="payment-option">
+
+		<input
+			type="radio"
+			id="cod"
+			name="paymentMode"
+			value="COD">
+
+		<label for="cod">
+			<span>💵</span>
+			Cash on Delivery
+		</label>
+
+	</div>
+
+</div>
 								</div>
 							</div>
 						</section>
