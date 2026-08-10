@@ -34,7 +34,16 @@ public class VerifyPaymentServlet extends HttpServlet {
 		HttpSession session =
 				req.getSession(false);
 
+		System.out.println("========== RAZORPAY VERIFY START ==========");
+
+		/*
+		 * ==========================================
+		 * SESSION CHECK
+		 * ==========================================
+		 */
 		if (session == null) {
+
+			System.out.println("Session exists: false");
 
 			resp.sendRedirect(
 					req.getContextPath()
@@ -43,13 +52,26 @@ public class VerifyPaymentServlet extends HttpServlet {
 			return;
 		}
 
+		System.out.println("Session exists: true");
+
 		User user =
 				(User) session.getAttribute("user");
 
 		Cart cart =
 				(Cart) session.getAttribute("cart");
 
+		System.out.println(
+				"User exists: "
+				+ (user != null));
+
+		System.out.println(
+				"Cart exists: "
+				+ (cart != null));
+
 		if (user == null) {
+
+			System.out.println(
+					"STOPPED: User missing");
 
 			resp.sendRedirect(
 					req.getContextPath()
@@ -62,6 +84,9 @@ public class VerifyPaymentServlet extends HttpServlet {
 				|| cart.getItems() == null
 				|| cart.getItems().isEmpty()) {
 
+			System.out.println(
+					"STOPPED: Cart missing or empty");
+
 			resp.sendRedirect(
 					req.getContextPath()
 					+ "/Cart.jsp");
@@ -70,7 +95,9 @@ public class VerifyPaymentServlet extends HttpServlet {
 		}
 
 		/*
-		 * Values returned by Razorpay Checkout.
+		 * ==========================================
+		 * VALUES RETURNED BY RAZORPAY
+		 * ==========================================
 		 */
 		String razorpayPaymentId =
 				req.getParameter(
@@ -84,15 +111,40 @@ public class VerifyPaymentServlet extends HttpServlet {
 				req.getParameter(
 						"razorpay_signature");
 
-		/*
-		 * IMPORTANT:
-		 * Get the Razorpay Order ID from OUR SERVER SESSION.
-		 * Do not trust only the value returned from the browser.
-		 */
 		String serverRazorpayOrderId =
 				(String) session.getAttribute(
 						"razorpayOrderId");
 
+		System.out.println(
+				"Payment ID received: "
+				+ (razorpayPaymentId != null
+				&& !razorpayPaymentId.isBlank()));
+
+		System.out.println(
+				"Returned Order ID received: "
+				+ (returnedRazorpayOrderId != null
+				&& !returnedRazorpayOrderId.isBlank()));
+
+		System.out.println(
+				"Signature received: "
+				+ (razorpaySignature != null
+				&& !razorpaySignature.isBlank()));
+
+		System.out.println(
+				"Server Order ID exists: "
+				+ (serverRazorpayOrderId != null));
+
+		System.out.println(
+				"Order IDs match: "
+				+ (serverRazorpayOrderId != null
+				&& serverRazorpayOrderId.equals(
+						returnedRazorpayOrderId)));
+
+		/*
+		 * ==========================================
+		 * PENDING CHECKOUT SESSION DATA
+		 * ==========================================
+		 */
 		String customerName =
 				(String) session.getAttribute(
 						"pendingCustomerName");
@@ -117,8 +169,34 @@ public class VerifyPaymentServlet extends HttpServlet {
 				(Integer) session.getAttribute(
 						"pendingRestaurantId");
 
+		System.out.println(
+				"Grand total exists: "
+				+ (grandTotal != null));
+
+		System.out.println(
+				"Restaurant ID exists: "
+				+ (restaurantId != null));
+
+		System.out.println(
+				"Payment mode exists: "
+				+ (paymentMode != null));
+
+		System.out.println(
+				"Customer name exists: "
+				+ (customerName != null));
+
+		System.out.println(
+				"Address exists: "
+				+ (address != null));
+
+		System.out.println(
+				"Phone exists: "
+				+ (phone != null));
+
 		/*
-		 * Validate all required payment/session information.
+		 * ==========================================
+		 * VALIDATE REQUIRED INFORMATION
+		 * ==========================================
 		 */
 		if (razorpayPaymentId == null
 				|| razorpayPaymentId.trim().isEmpty()
@@ -130,6 +208,9 @@ public class VerifyPaymentServlet extends HttpServlet {
 				|| grandTotal == null
 				|| restaurantId == null
 				|| paymentMode == null) {
+
+			System.out.println(
+					"STOPPED: Payment/session information incomplete");
 
 			session.setAttribute(
 					"checkoutError",
@@ -143,11 +224,15 @@ public class VerifyPaymentServlet extends HttpServlet {
 		}
 
 		/*
-		 * Ensure the order ID returned by the browser is the same
-		 * Razorpay Order ID that our server originally created.
+		 * ==========================================
+		 * VERIFY ORDER ID
+		 * ==========================================
 		 */
 		if (!serverRazorpayOrderId.equals(
 				returnedRazorpayOrderId)) {
+
+			System.out.println(
+					"STOPPED: Razorpay Order ID mismatch");
 
 			session.setAttribute(
 					"checkoutError",
@@ -160,6 +245,11 @@ public class VerifyPaymentServlet extends HttpServlet {
 			return;
 		}
 
+		/*
+		 * ==========================================
+		 * VERIFY SIGNATURE
+		 * ==========================================
+		 */
 		RazorpayService razorpayService =
 				new RazorpayService();
 
@@ -170,7 +260,14 @@ public class VerifyPaymentServlet extends HttpServlet {
 								razorpayPaymentId,
 								razorpaySignature);
 
+		System.out.println(
+				"Signature valid: "
+				+ signatureValid);
+
 		if (!signatureValid) {
+
+			System.out.println(
+					"STOPPED: Razorpay signature invalid");
 
 			session.setAttribute(
 					"checkoutError",
@@ -183,13 +280,14 @@ public class VerifyPaymentServlet extends HttpServlet {
 			return;
 		}
 
+		System.out.println(
+				"Payment verification passed");
+
 		/*
 		 * ==========================================
-		 * PAYMENT VERIFIED
-		 * NOW CREATE THE TAPFOODS ORDER
+		 * CREATE TAPFOODS ORDER
 		 * ==========================================
 		 */
-
 		Order order =
 				new Order();
 
@@ -214,11 +312,21 @@ public class VerifyPaymentServlet extends HttpServlet {
 		OrderDAOImpl orderDAO =
 				new OrderDAOImpl();
 
+		System.out.println(
+				"Attempting order insert...");
+
 		int orderId =
 				orderDAO.placeOrder(
 						order);
 
+		System.out.println(
+				"Generated TapFoods Order ID valid: "
+				+ (orderId > 0));
+
 		if (orderId <= 0) {
+
+			System.out.println(
+					"STOPPED: Order insert failed");
 
 			session.setAttribute(
 					"checkoutError",
@@ -235,13 +343,18 @@ public class VerifyPaymentServlet extends HttpServlet {
 				orderId);
 
 		/*
-		 * Save all order items.
+		 * ==========================================
+		 * SAVE ORDER ITEMS
+		 * ==========================================
 		 */
 		OrderItemDAOImpl orderItemDAO =
 				new OrderItemDAOImpl();
 
 		boolean allItemsInserted =
 				true;
+
+		System.out.println(
+				"Attempting order item inserts...");
 
 		for (CartItem cartItem
 				: cart.getItems().values()) {
@@ -275,7 +388,14 @@ public class VerifyPaymentServlet extends HttpServlet {
 			}
 		}
 
+		System.out.println(
+				"All order items inserted: "
+				+ allItemsInserted);
+
 		if (!allItemsInserted) {
+
+			System.out.println(
+					"STOPPED: Order item insert failed");
 
 			session.setAttribute(
 					"checkoutError",
@@ -290,10 +410,9 @@ public class VerifyPaymentServlet extends HttpServlet {
 
 		/*
 		 * ==========================================
-		 * SAVE PAYMENT INFORMATION
+		 * SAVE PAYMENT
 		 * ==========================================
 		 */
-
 		Payment payment =
 				new Payment();
 
@@ -318,11 +437,21 @@ public class VerifyPaymentServlet extends HttpServlet {
 		PaymentDAOImpl paymentDAO =
 				new PaymentDAOImpl();
 
+		System.out.println(
+				"Attempting payment insert...");
+
 		int paymentId =
 				paymentDAO.addPayment(
 						payment);
 
+		System.out.println(
+				"Generated Payment ID valid: "
+				+ (paymentId > 0));
+
 		if (paymentId <= 0) {
+
+			System.out.println(
+					"STOPPED: Payment insert failed");
 
 			session.setAttribute(
 					"checkoutError",
@@ -340,10 +469,9 @@ public class VerifyPaymentServlet extends HttpServlet {
 
 		/*
 		 * ==========================================
-		 * PREPARE ORDER SUCCESS PAGE
+		 * SUCCESS PAGE DATA
 		 * ==========================================
 		 */
-
 		session.setAttribute(
 				"lastOrder",
 				order);
@@ -381,8 +509,7 @@ public class VerifyPaymentServlet extends HttpServlet {
 				cart);
 
 		/*
-		 * Clear shopping cart only AFTER successful
-		 * payment verification and database save.
+		 * Clear cart only after everything succeeds.
 		 */
 		session.removeAttribute(
 				"cart");
@@ -395,6 +522,12 @@ public class VerifyPaymentServlet extends HttpServlet {
 
 		clearPendingPaymentData(
 				session);
+
+		System.out.println(
+				"RAZORPAY ORDER COMPLETED SUCCESSFULLY");
+
+		System.out.println(
+				"========== RAZORPAY VERIFY END ==========");
 
 		resp.sendRedirect(
 				req.getContextPath()

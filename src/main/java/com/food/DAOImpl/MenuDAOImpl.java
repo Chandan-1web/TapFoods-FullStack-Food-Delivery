@@ -17,7 +17,7 @@ public class MenuDAOImpl implements MenuDAO {
 
         List<Menu> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Menu";
+        String query = "SELECT * FROM menu";
 
         try {
 
@@ -51,7 +51,7 @@ public class MenuDAOImpl implements MenuDAO {
 
         Menu menu = null;
 
-        String query = "SELECT * FROM Menu WHERE MenuID=?";
+        String query = "SELECT * FROM menu WHERE MenuID=?";
 
         try {
 
@@ -85,7 +85,7 @@ public class MenuDAOImpl implements MenuDAO {
 
         List<Menu> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Menu WHERE RestaurantID=?";
+        String query = "SELECT * FROM menu WHERE RestaurantID=?";
 
         try {
 
@@ -119,7 +119,7 @@ public class MenuDAOImpl implements MenuDAO {
     @Override
     public boolean addMenu(Menu menu) {
 
-        String query = "INSERT INTO Menu(RestaurantID,ItemName,Description,Price,IsAvailable,ImagePath) VALUES(?,?,?,?,?,?)";
+        String query = "INSERT INTO menu(RestaurantID,ItemName,Description,Price,IsAvailable,ImagePath) VALUES(?,?,?,?,?,?)";
 
         try {
 
@@ -144,7 +144,7 @@ public class MenuDAOImpl implements MenuDAO {
     @Override
     public boolean updateMenu(Menu menu) {
 
-        String query = "UPDATE Menu SET RestaurantID=?,ItemName=?,Description=?,Price=?,IsAvailable=?,ImagePath=? WHERE MenuID=?";
+        String query = "UPDATE menu SET RestaurantID=?,ItemName=?,Description=?,Price=?,IsAvailable=?,ImagePath=? WHERE MenuID=?";
 
         try {
 
@@ -170,7 +170,7 @@ public class MenuDAOImpl implements MenuDAO {
     @Override
     public boolean deleteMenu(int menuID) {
 
-        String query = "DELETE FROM Menu WHERE MenuID=?";
+        String query = "DELETE FROM menu WHERE MenuID=?";
 
         try {
 

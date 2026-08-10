@@ -10,157 +10,151 @@ import java.util.List;
 
 public class RestaurantDAOImpl implements RestaurantDAO {
 
-	private Connection con;
+    private Connection con;
 
-	public RestaurantDAOImpl() {
-		con = DBConnection.getConnection();
-		System.out.println("RestaurantDAOImpl Connection = " + con);
-	}
+    public RestaurantDAOImpl() {
+        con = DBConnection.getConnection();
+        System.out.println("RestaurantDAOImpl Connection = " + con);
+    }
 
-	@Override
-	public List<Restaurant> getAllRestaurants() {
+    @Override
+    public List<Restaurant> getAllRestaurants() {
 
-		List<Restaurant> list = new ArrayList<>();
+        List<Restaurant> list = new ArrayList<>();
 
-		String query = "SELECT * FROM Restaurant";
+        String query = "SELECT * FROM restaurant";
 
-		try {
+        try {
+            if (con == null) {
+                throw new RuntimeException("Database connection is NULL");
+            }
 
-			if (con == null) {
-				throw new RuntimeException("Database connection is NULL");
-			}
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
 
-			PreparedStatement ps = con.prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Restaurant r = new Restaurant();
 
-			while (rs.next()) {
+                r.setRestaurantID(rs.getInt("RestaurantID"));
+                r.setName(rs.getString("Name"));
+                r.setCuisineType(rs.getString("CuisineType"));
+                r.setDeliveryTime(rs.getInt("DeliveryTime"));
+                r.setAddress(rs.getString("Address"));
+                r.setRating(rs.getDouble("Rating"));
+                r.setActive(rs.getBoolean("IsActive"));
+                r.setImagePath(rs.getString("ImagePath"));
 
-				Restaurant r = new Restaurant();
+                list.add(r);
+            }
 
-				r.setRestaurantID(rs.getInt("RestaurantID"));
-				r.setName(rs.getString("Name"));
-				r.setCuisineType(rs.getString("CuisineType"));
-				r.setDeliveryTime(rs.getInt("DeliveryTime"));
-				r.setAddress(rs.getString("Address"));
-				r.setRating(rs.getDouble("Rating"));
-				r.setActive(rs.getBoolean("IsActive"));
-				r.setImagePath(rs.getString("ImagePath"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-				list.add(r);
-			}
+        return list;
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    @Override
+    public Restaurant getRestaurantById(int restaurantID) {
 
-		return list;
-	}
+        Restaurant r = null;
 
+        String query = "SELECT * FROM restaurant WHERE RestaurantID=?";
 
-	@Override
-	public Restaurant getRestaurantById(int restaurantID) {
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, restaurantID);
 
-		Restaurant r = null;
+            ResultSet rs = ps.executeQuery();
 
-		String query = "SELECT * FROM Restaurant WHERE RestaurantID=?";
+            if (rs.next()) {
+                r = new Restaurant();
 
-		try {
+                r.setRestaurantID(rs.getInt("RestaurantID"));
+                r.setName(rs.getString("Name"));
+                r.setCuisineType(rs.getString("CuisineType"));
+                r.setDeliveryTime(rs.getInt("DeliveryTime"));
+                r.setAddress(rs.getString("Address"));
+                r.setRating(rs.getDouble("Rating"));
+                r.setActive(rs.getBoolean("IsActive"));
+                r.setImagePath(rs.getString("ImagePath"));
+            }
 
-			PreparedStatement ps = con.prepareStatement(query);
-			ps.setInt(1, restaurantID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-			ResultSet rs = ps.executeQuery();
+        return r;
+    }
 
-			if (rs.next()) {
+    @Override
+    public boolean addRestaurant(Restaurant restaurant) {
 
-				r = new Restaurant();
+        String query =
+                "INSERT INTO restaurant(Name,CuisineType,DeliveryTime,Address,Rating,IsActive,ImagePath) VALUES(?,?,?,?,?,?,?)";
 
-				r.setRestaurantID(rs.getInt("RestaurantID"));
-				r.setName(rs.getString("Name"));
-				r.setCuisineType(rs.getString("CuisineType"));
-				r.setDeliveryTime(rs.getInt("DeliveryTime"));
-				r.setAddress(rs.getString("Address"));
-				r.setRating(rs.getDouble("Rating"));
-				r.setActive(rs.getBoolean("IsActive"));
-				r.setImagePath(rs.getString("ImagePath"));
-			}
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            ps.setString(1, restaurant.getName());
+            ps.setString(2, restaurant.getCuisineType());
+            ps.setInt(3, restaurant.getDeliveryTime());
+            ps.setString(4, restaurant.getAddress());
+            ps.setDouble(5, restaurant.getRating());
+            ps.setBoolean(6, restaurant.isActive());
+            ps.setString(7, restaurant.getImagePath());
 
-		return r;
-	}
+            return ps.executeUpdate() > 0;
 
-	@Override
-	public boolean addRestaurant(Restaurant restaurant) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		String query = "INSERT INTO Restaurant(Name,CuisineType,DeliveryTime,Address,Rating,IsActive,ImagePath) VALUES(?,?,?,?,?,?,?)";
+        return false;
+    }
 
-		try {
+    @Override
+    public boolean updateRestaurant(Restaurant restaurant) {
 
-			PreparedStatement ps = con.prepareStatement(query);
+        String query =
+                "UPDATE restaurant SET Name=?,CuisineType=?,DeliveryTime=?,Address=?,Rating=?,IsActive=?,ImagePath=? WHERE RestaurantID=?";
 
-			ps.setString(1, restaurant.getName());
-			ps.setString(2, restaurant.getCuisineType());
-			ps.setInt(3, restaurant.getDeliveryTime());
-			ps.setString(4, restaurant.getAddress());
-			ps.setDouble(5, restaurant.getRating());
-			ps.setBoolean(6, restaurant.isActive());
-			ps.setString(7, restaurant.getImagePath());
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
 
-			return ps.executeUpdate() > 0;
+            ps.setString(1, restaurant.getName());
+            ps.setString(2, restaurant.getCuisineType());
+            ps.setInt(3, restaurant.getDeliveryTime());
+            ps.setString(4, restaurant.getAddress());
+            ps.setDouble(5, restaurant.getRating());
+            ps.setBoolean(6, restaurant.isActive());
+            ps.setString(7, restaurant.getImagePath());
+            ps.setInt(8, restaurant.getRestaurantID());
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            return ps.executeUpdate() > 0;
 
-		return false;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public boolean updateRestaurant(Restaurant restaurant) {
+        return false;
+    }
 
-		String query = "UPDATE Restaurant SET Name=?,CuisineType=?,DeliveryTime=?,Address=?,Rating=?,IsActive=?,ImagePath=? WHERE RestaurantID=?";
+    @Override
+    public boolean deleteRestaurant(int restaurantID) {
 
-		try {
+        String query = "DELETE FROM restaurant WHERE RestaurantID=?";
 
-			PreparedStatement ps = con.prepareStatement(query);
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, restaurantID);
 
-			ps.setString(1, restaurant.getName());
-			ps.setString(2, restaurant.getCuisineType());
-			ps.setInt(3, restaurant.getDeliveryTime());
-			ps.setString(4, restaurant.getAddress());
-			ps.setDouble(5, restaurant.getRating());
-			ps.setBoolean(6, restaurant.isActive());
-			ps.setString(7, restaurant.getImagePath());
-			ps.setInt(8, restaurant.getRestaurantID());
+            return ps.executeUpdate() > 0;
 
-			return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean deleteRestaurant(int restaurantID) {
-
-		String query = "DELETE FROM Restaurant WHERE RestaurantID=?";
-
-		try {
-
-			PreparedStatement ps = con.prepareStatement(query);
-			ps.setInt(1, restaurantID);
-
-			return ps.executeUpdate() > 0;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
+        return false;
+    }
 }
