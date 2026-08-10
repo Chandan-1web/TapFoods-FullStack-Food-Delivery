@@ -157,6 +157,8 @@ FoodDelivery
 │   └── Restaurant.jsp
 │
 └── Database
+```
+
 ---
 
 # 🔄 Application Workflow
@@ -273,6 +275,28 @@ Security features implemented in the application include:
 ## 🔐 Profile & Password Management
 
 ![TapFoods Profile Management](screenshots/profile2.png)
+
+---
+# 🌐 Live Demo
+
+TapFoods is deployed and available online.
+
+**🔗 Live Application:**  
+https://tapfoods-fullstack-food-delivery.onrender.com
+
+### Demo Features
+
+- User Registration & Login
+- Restaurant and Menu Browsing
+- Shopping Cart
+- Checkout
+- Cash on Delivery
+- Razorpay Test Payment
+- Order History
+- Order Cancellation
+- Profile Management
+
+> **Note:** Razorpay is integrated in Test Mode for demonstration purposes.
 
 ---
 # 🚀 Deployment
