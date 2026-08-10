@@ -222,48 +222,59 @@ Security features implemented in the application include:
 
 # 🖥️ Application Screenshots
 
-## Login
+## 🔐 Login
 
 ![TapFoods Login](screenshots/login.png)
 
-## Registration
+## 📝 Registration
 
 ![TapFoods Registration](screenshots/register.png)
 
-## Restaurant Dashboard
+## 🏠 Restaurant Dashboard
 
-![TapFoods Restaurants](screenshots/restaurants.png)
+![TapFoods Restaurant Dashboard](screenshots/restaurant1.png)
 
-## Restaurant Menu
+## 🍽️ Popular Restaurants
+
+![TapFoods Restaurants](screenshots/restaurant2.png)
+
+## 📖 Restaurant Menu
 
 ![TapFoods Menu](screenshots/menu.png)
 
-## Shopping Cart
+## 🛒 Shopping Cart
 
 ![TapFoods Cart](screenshots/cart.png)
 
-## Checkout
+## 💳 Checkout
 
 ![TapFoods Checkout](screenshots/checkout.png)
 
-## Razorpay Payment
+## 💰 Razorpay Payment
 
-![TapFoods Razorpay Payment](screenshots/razorpay-payment.png)
+![TapFoods Razorpay Payment](screenshots/razorpayPayment.png)
 
-## Order Success
+## ✅ Razorpay Payment Successful
 
-![TapFoods Order Success](screenshots/order-success.png)
+![TapFoods Razorpay Payment Success](screenshots/razorpayPayment2.png)
 
-## Order History
+## 🎉 Order Success
 
-![TapFoods Order History](screenshots/my-orders.png)
+![TapFoods Order Success](screenshots/orderSuccess.png)
 
-## User Profile
+## 📦 Order History
+
+![TapFoods Order History](screenshots/orderHistory.png)
+
+## 👤 User Profile
 
 ![TapFoods Profile](screenshots/profile.png)
 
----
+## 🔐 Profile & Password Management
 
+![TapFoods Profile Management](screenshots/profile2.png)
+
+---
 # 🚀 Deployment
 
 The application is deployed as a Dockerized Java web application.
